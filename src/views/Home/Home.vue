@@ -3,23 +3,34 @@
   import './styles.scss'
   import api from '../../services/index'
 
-  const header = ref("pokemon list")
-  const inputValue = ref('')
+  interface Pokemons {
+    id: number
+    label: string
+  }
 
+  const header = ref("pokemon list");
+  const error = ref();
+  const inputValue = ref('')
   export default defineComponent({
     name:'home',
     setup() {
-        const pokemons = ref([]);
-        const fetchPokemons = async () => {
-         const response = await api.get("/pokemon?limit=20")
-         pokemons.value = response.data.results
+      const pokemons = ref<Pokemons[]>([]);
+      const handler = async () => {
+        try {
+          const response = await api.get(`/pokemon/${inputValue.value}`)
+          pokemons.value.push({
+            id: pokemons.value.length + 1,
+            label: inputValue.value
+          })
+        } catch(err) {
+          error.value = err
         }
-      onMounted(fetchPokemons);
-
+      }
       return {
         pokemons,
         header,
-        inputValue
+        inputValue,
+        handler
       }
     },
   })
@@ -29,16 +40,21 @@
 <template>
   <main class="home">
       <h2>{{ header }}</h2>
-      <div>
+      <form
+        @submit.prevent="handler"
+      >
         <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
         <input 
-          v-model="inputValue" 
+          v-model.trim="inputValue" 
           type="text"
           maxlength="20"
           placeholder="search pokemon" />
-        </div>
-      <ul>
-        <li>{{ pokemons }}</li>
-      </ul>
+          <button v-on:click="">
+            <font-awesome-icon icon="fa-solid fa-plus" />
+          </button>
+        </form>
+        <ul>
+          <li v-for="{id, label} in pokemons" :key="id">{{ label }}</li>
+        </ul>
   </main>
 </template>

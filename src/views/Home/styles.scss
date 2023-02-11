@@ -7,7 +7,7 @@
     text-align: center;
   }
 
-  div {
+  form {
     background-color: white;
     border-radius: 0.25rem;
     padding: 0.25rem;
@@ -25,8 +25,33 @@
     }
   }
 
+  button {
+    background-color: rgb(195, 233, 195);
+    border: none;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    svg {
+      color: rgb(69, 182, 41);
+      padding: 0.125rem;
+    }
+  }
   svg {
     color: rgb(31, 29, 29);
     padding: 0.125rem;
+  }
+  
+  li {
+    list-style: none;
+    background-color: rgb(31, 29, 29);
+    padding: 0.25rem 1rem;
+    border-radius: 0.25rem;
+
+    & + li {
+      margin-top: 0.5rem;
+    }
+
+    &:hover {
+      filter: brightness(0.9)
+    }
   }
 }
