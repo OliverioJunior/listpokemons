@@ -1,36 +1,55 @@
 <script lang="ts">
-  import { defineComponent, onMounted, ref } from 'vue';
+  import { computed, defineComponent, onMounted, ref } from 'vue';
   import './styles.scss'
   import api from '../../services/index'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
   interface Pokemons {
     id: number
     label: string
   }
+  interface Errs {
+    state: boolean
+    message: string
+  }
 
   const header = ref("pokemon list");
-  const error = ref();
   const inputValue = ref('')
   export default defineComponent({
     name:'home',
     setup() {
+      const error = ref<Errs>({state: false, message: ""});
       const pokemons = ref<Pokemons[]>([]);
+      const hasError = computed(() => error.value.state);
+      const hasErrorMessage = computed(()=> error.value.message)
       const handler = async () => {
         try {
-          const response = await api.get(`/pokemon/${inputValue.value}`)
+          await api.get(`/pokemon/${inputValue.value.toLocaleLowerCase()}`)
+          error.value =  { 
+            state: false,
+            message: ""
+          }
           pokemons.value.push({
             id: pokemons.value.length + 1,
             label: inputValue.value
           })
+          inputValue.value = ""
+          
         } catch(err) {
-          error.value = err
+          error.value = { 
+            state: true,
+            message: "Dígite um nome de pokemon válido"
+          }
         }
       }
       return {
         pokemons,
         header,
         inputValue,
-        handler
+        handler,
+        error,
+        hasError,
+        hasErrorMessage
       }
     },
   })
@@ -42,6 +61,7 @@
       <h2>{{ header }}</h2>
       <form
         @submit.prevent="handler"
+        :class="{error: hasError}"
       >
         <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
         <input 
@@ -49,12 +69,15 @@
           type="text"
           maxlength="20"
           placeholder="search pokemon" />
-          <button v-on:click="">
+          <button type="submit">
             <font-awesome-icon icon="fa-solid fa-plus" />
           </button>
         </form>
+        <span>{{ hasErrorMessage }}</span>
         <ul>
-          <li v-for="{id, label} in pokemons" :key="id">{{ label }}</li>
+          <li v-for="{id, label} in pokemons" :key="id">
+            {{ label }}
+          </li>
         </ul>
   </main>
 </template>

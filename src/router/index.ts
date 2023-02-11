@@ -5,6 +5,9 @@ const routes = [{
   path: '/',
   name: 'Home',
   component: Home
+},{
+  path: '/pokemon/:id',
+  component: ()=> import('../views/Pokemon/Pokemon.vue')
 }]
 
 const router = createRouter({

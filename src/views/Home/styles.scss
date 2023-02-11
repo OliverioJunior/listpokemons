@@ -45,6 +45,7 @@
     background-color: rgb(31, 29, 29);
     padding: 0.25rem 1rem;
     border-radius: 0.25rem;
+    cursor: pointer;
 
     & + li {
       margin-top: 0.5rem;
@@ -54,4 +55,15 @@
       filter: brightness(0.9)
     }
   }
+
+  span {
+    text-transform: none;
+    font-size: small;
+    text-align: center;
+    color: #d96868;
+  }
+}
+
+.error {
+  outline: 2px solid rgb(219, 35, 35);
 }
