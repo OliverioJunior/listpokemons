@@ -1,2 +1,2 @@
-* [ ] Create screen with  center text input
-* [ ]
+* [X] Create screen with  center text input
+* [ ] Create call api
