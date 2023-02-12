@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   interface Pokemons {
     id: number
     label: string
+    image: string
   }
   interface Errs {
     state: boolean
@@ -24,14 +25,15 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
       const hasErrorMessage = computed(()=> error.value.message)
       const handler = async () => {
         try {
-          await api.get(`/pokemon/${inputValue.value.toLocaleLowerCase()}`)
+          const response = await api.get(`/pokemon/${inputValue.value.toLocaleLowerCase()}`)
           error.value =  { 
             state: false,
             message: ""
           }
           pokemons.value.push({
             id: pokemons.value.length + 1,
-            label: inputValue.value
+            label: inputValue.value,
+            image: response.data.sprites.front_default
           })
           inputValue.value = ""
           
@@ -75,8 +77,9 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
         </form>
         <span>{{ hasErrorMessage }}</span>
         <ul>
-          <li v-for="{id, label} in pokemons" :key="id">
-            {{ label }}
+          <li v-for="{id, label, image} in pokemons" :key="id">
+            <p>{{ label }}</p>
+            <img :src="image" :alt="label" />
           </li>
         </ul>
   </main>
