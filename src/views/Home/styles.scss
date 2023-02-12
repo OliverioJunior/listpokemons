@@ -48,8 +48,11 @@
     padding: 0.25rem 1rem;
     border-radius: 0.25rem;
     cursor: pointer;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    a {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      color:rgb(195, 233, 195);
+    }
     & + li {
       margin-top: 0.5rem;
     }

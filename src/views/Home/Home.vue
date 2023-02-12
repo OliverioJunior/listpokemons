@@ -78,8 +78,10 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
         <span>{{ hasErrorMessage }}</span>
         <ul>
           <li v-for="{id, label, image} in pokemons" :key="id">
-            <p>{{ label }}</p>
-            <img :src="image" :alt="label" />
+            <RouterLink v-bind:key="label"  :to="`/pokemon/${label}`">
+              <p>{{ label }}</p>
+              <img :src="image" :alt="label" />
+            </RouterLink>
           </li>
         </ul>
   </main>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>{{ $route.params.id }}</h2>
+    <h2>hello {{ $route.params.id }}</h2>
   </div>
 </template>
 
@@ -8,7 +8,8 @@
   export default {
     computer: {
       destinationId() {
-        // return parseInt(this.$route.params.id)
+        
+        return parseInt(String(this.$route.params.id))
       }
     }
   }
