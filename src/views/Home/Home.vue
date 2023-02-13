@@ -3,7 +3,6 @@
   import './styles.scss'
   import api from '../../services/index'
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-  import { RouterLink } from 'vue-router';
   import { Errs, Pokemons } from '../../@types';
   import ListPokemons from '../../components/ListPokemons/ListPokemons.vue'
 
@@ -17,8 +16,15 @@
     setup() {
       const error = ref<Errs>({state: false, message: ""});
       const pokemons = ref<Pokemons[]>([]);
+      let boo = ref(false);
       const hasError = computed(() => error.value.state);
       const hasErrorMessage = computed(()=> error.value.message)
+      
+      onMounted(() => {
+        const savedList = localStorage.getItem('@ListPokem')
+        pokemons.value = JSON.parse(String(savedList))
+      })
+
       const handler = async () => {
         try {
           const response = await api.get(`/pokemon/${inputValue.value.toLocaleLowerCase()}`)
@@ -26,11 +32,13 @@
             state: false,
             message: ""
           }
-          pokemons.value.push({
+          const local = {
             id: pokemons.value.length + 1,
             label: inputValue.value,
             image: response.data.sprites.front_default
-          })
+          }
+          pokemons.value.push(local)
+          localStorage.setItem('@ListPokem', JSON.stringify(pokemons.value))
           inputValue.value = ""
           
         } catch(err) {
