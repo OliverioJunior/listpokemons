@@ -22,7 +22,8 @@
       
       onMounted(() => {
         const savedList = localStorage.getItem('@ListPokem')
-        pokemons.value = JSON.parse(String(savedList))
+        console.log(pokemons.value)
+        if(savedList?.length) pokemons.value = JSON.parse(String(savedList))
       })
 
       const handler = async () => {
@@ -46,6 +47,7 @@
             state: true,
             message: "Dígite um nome de pokemon válido"
           }
+          console.log(err)
         }
       }
       return {
