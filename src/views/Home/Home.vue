@@ -2,22 +2,18 @@
   import { computed, defineComponent, onMounted, ref } from 'vue';
   import './styles.scss'
   import api from '../../services/index'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
-  interface Pokemons {
-    id: number
-    label: string
-    image: string
-  }
-  interface Errs {
-    state: boolean
-    message: string
-  }
+  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+  import { RouterLink } from 'vue-router';
+  import { Errs, Pokemons } from '../../@types';
+  import ListPokemons from '../../components/ListPokemons/ListPokemons.vue'
 
   const header = ref("pokemon list");
   const inputValue = ref('')
   export default defineComponent({
     name:'home',
+    components:{
+      ListPokemons,
+    },
     setup() {
       const error = ref<Errs>({state: false, message: ""});
       const pokemons = ref<Pokemons[]>([]);
@@ -51,7 +47,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
         handler,
         error,
         hasError,
-        hasErrorMessage
+        hasErrorMessage,
       }
     },
   })
@@ -77,12 +73,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
         </form>
         <span>{{ hasErrorMessage }}</span>
         <ul>
-          <li v-for="{id, label, image} in pokemons" :key="id">
-            <RouterLink v-bind:key="label"  :to="`/pokemon/${label}`">
-              <p>{{ label }}</p>
-              <img :src="image" :alt="label" />
-            </RouterLink>
-          </li>
+          <ListPokemons v-for="pokemon in pokemons" :key="pokemon.id" :pokemons="pokemon" />
         </ul>
   </main>
 </template>

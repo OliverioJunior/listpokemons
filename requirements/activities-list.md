@@ -1,4 +1,4 @@
 * [X] Create screen with  center text input
 * [X] Create API calls
 * [X] Create pokemon list
-* [ ] Create dynamic router
+* [X] Create dynamic router
